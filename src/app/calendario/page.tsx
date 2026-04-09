@@ -198,7 +198,7 @@ export default function CalendarPage() {
                           {info.actualStatus === "trabalho" && (
                             <div className={cn(
                               "w-3 h-3 rounded-full border-2 border-background shadow-sm",
-                              info.shift === "diurno" ? "bg-amber-400" : "bg-indigo-500"
+                              (info.shift.toLowerCase().includes("noite") || info.shift.toLowerCase() === "noturno") ? "bg-indigo-500" : "bg-amber-400"
                             )} />
                           )}
                         </div>
@@ -207,16 +207,16 @@ export default function CalendarPage() {
                       {!isCompact && info.actualStatus === "trabalho" && (
                         <div className={cn(
                           "text-[9px] px-2 py-0.5 rounded-lg font-black uppercase tracking-tighter truncate mt-auto flex items-center gap-1",
-                          info.shift === "diurno" ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
+                          (info.shift.toLowerCase().includes("noite") || info.shift.toLowerCase() === "noturno") ? "bg-indigo-100 text-indigo-700" : "bg-amber-100 text-amber-700"
                         )}>
-                          {info.shift === "diurno" ? <Sun className="w-2 h-2" /> : <Moon className="w-2 h-2" />}
+                          {(info.shift.toLowerCase().includes("noite") || info.shift.toLowerCase() === "noturno") ? <Moon className="w-2 h-2" /> : <Sun className="w-2 h-2" />}
                           {info.shift}
                         </div>
                       )}
 
                       {isCompact && info.actualStatus === "trabalho" && (
                         <div className="mt-auto flex justify-center">
-                          {info.shift === "diurno" ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-indigo-500" />}
+                          {(info.shift.toLowerCase().includes("noite") || info.shift.toLowerCase() === "noturno") ? <Moon className="w-4 h-4 text-indigo-500" /> : <Sun className="w-4 h-4 text-amber-500" />}
                         </div>
                       )}
 
@@ -304,10 +304,10 @@ export default function CalendarPage() {
                   {selectedDay.actualStatus === "trabalho" && (
                     <>
                       <DetailCard 
-                        icon={Clock}
+                        icon={(selectedDay.shift.toLowerCase().includes("noite") || selectedDay.shift.toLowerCase() === "noturno") ? Moon : Sun}
                         label="Turno"
-                        value={selectedDay.shift === "diurno" ? "Período Diurno" : "Período Noturno"}
-                        color={selectedDay.shift === "diurno" ? "text-amber-600" : "text-indigo-600"}
+                        value={selectedDay.shift}
+                        color={(selectedDay.shift.toLowerCase().includes("noite") || selectedDay.shift.toLowerCase() === "noturno") ? "text-indigo-600" : "text-amber-600"}
                       />
                       <DetailCard 
                         icon={Info}

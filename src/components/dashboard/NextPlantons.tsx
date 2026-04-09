@@ -53,9 +53,9 @@ export function NextPlantons({ plantons, offDays }: NextPlantonsProps) {
               <div className="flex items-center gap-3 sm:gap-4">
                 <div className={cn(
                   "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex flex-col items-center justify-center text-xs sm:text-sm font-bold shadow-inner transition-transform group-hover:scale-105",
-                  plantao.shift === "diurno" 
-                    ? "bg-amber-50 text-amber-600 border border-amber-100" 
-                    : "bg-indigo-50 text-indigo-600 border border-indigo-100"
+                  (plantao.shift.toLowerCase().includes("noite") || plantao.shift.toLowerCase() === "noturno")
+                    ? "bg-indigo-50 text-indigo-600 border border-indigo-100"
+                    : "bg-amber-50 text-amber-600 border border-amber-100"
                 )}>
                   <span className="text-base sm:text-lg leading-none">{format(plantao.date, "dd")}</span>
                   <span className="uppercase text-[8px] sm:text-[10px] opacity-70">{format(plantao.date, "MMM", { locale: ptBR })}</span>
@@ -76,9 +76,11 @@ export function NextPlantons({ plantons, offDays }: NextPlantonsProps) {
                     <span className="text-[10px] sm:text-xs text-muted-foreground">{plantao.hours}</span>
                     <span className={cn(
                       "text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-widest",
-                      plantao.shift === "diurno" ? "bg-amber-100 text-amber-700" : "bg-indigo-100 text-indigo-700"
+                      (plantao.shift.toLowerCase().includes("noite") || plantao.shift.toLowerCase() === "noturno")
+                        ? "bg-indigo-100 text-indigo-700"
+                        : "bg-amber-100 text-amber-700"
                     )}>
-                      {plantao.shift === "diurno" ? "Diurno ☀️" : "Noturno 🌙"}
+                      {plantao.shift} {(plantao.shift.toLowerCase().includes("noite") || plantao.shift.toLowerCase() === "noturno") ? "🌙" : "☀️"}
                     </span>
                   </div>
                 </div>

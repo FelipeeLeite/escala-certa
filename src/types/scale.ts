@@ -1,9 +1,6 @@
 export type ShiftType = "diurno" | "noturno";
-
 export type DayStatus = "trabalho" | "folga";
-
-export type ShiftMode = "alternating" | "fixed";
-
+export type ShiftMode = "alternating" | "fixed" | "custom_cycle";
 export type FinancialMode = "per_shift" | "per_hour";
 
 export interface FinancialConfig {
@@ -12,12 +9,23 @@ export interface FinancialConfig {
   currency: string;
 }
 
+export interface CycleStep {
+  id: string;
+  type: DayStatus;
+  label: string; // Ex: "Manhã", "Tarde", "Noite", "Plantão A"
+  startTime: string; // HH:mm
+  endTime: string; // HH:mm
+  color?: string; // Cor opcional para exibição no calendário
+  observation?: string;
+  crossesMidnight?: boolean; // Se o turno termina no dia seguinte
+}
+
 export interface ScaleConfig {
-  startDate: string; // ISO string
-  startStatus: DayStatus;
-  shiftMode: ShiftMode;
-  initialShift: ShiftType; // Usado para "alternating" e como padrão inicial
-  fixedShift: ShiftType; // Usado quando shiftMode === "fixed"
+  startDate: string; // ISO string - Data base de início do ciclo
+  startStatus: DayStatus; // Legado (para preset 12x36)
+  shiftMode: ShiftMode; // alternating | fixed | custom_cycle
+  initialShift: ShiftType; // Legado (para preset 12x36)
+  fixedShift: ShiftType; // Legado (para preset 12x36)
   dayShiftHours: {
     start: string; // HH:mm
     end: string; // HH:mm
@@ -26,6 +34,7 @@ export interface ScaleConfig {
     start: string; // HH:mm
     end: string; // HH:mm
   };
+  customCycle: CycleStep[]; // Novo: Lista ordenada de passos do ciclo
   displayPlantonsCount: number;
   financial?: FinancialConfig;
 }
@@ -38,19 +47,20 @@ export interface UserEvent {
   title: string;
   type: EventType;
   description?: string;
-  isOverride: boolean; // Se este evento altera o status do dia (trabalho/folga)
-  overrideStatus?: DayStatus; // Status que será aplicado se isOverride for true
+  isOverride: boolean;
+  overrideStatus?: DayStatus;
 }
 
 export interface DayInfo {
   date: Date;
-  plannedStatus: DayStatus; // O que a escala 12x36 previu
-  actualStatus: DayStatus;  // O status final após considerar as exceções
-  shift: ShiftType;
+  plannedStatus: DayStatus;
+  actualStatus: DayStatus;
+  shift: string; // Agora string livre (ex: "diurno", "noturno", "Manhã")
   hours: string;
   isToday: boolean;
   events: UserEvent[];
-  isOverridden: boolean; // Se o dia foi alterado por uma exceção
+  isOverridden: boolean;
+  cycleStep?: CycleStep; // Passo do ciclo correspondente a este dia
 }
 
 export interface MonthMetrics {

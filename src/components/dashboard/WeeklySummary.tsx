@@ -42,7 +42,7 @@ export function WeeklySummary({ summary }: WeeklySummaryProps) {
                 day.isToday ? "bg-white/20" : (day.actualStatus === "trabalho" ? "bg-blue-50" : "bg-emerald-50")
               )}>
                 {day.actualStatus === "trabalho" ? (
-                  day.shift === "diurno" ? <Sun className="w-4 h-4 text-amber-500" /> : <Moon className="w-4 h-4 text-indigo-500" />
+                  (day.shift.toLowerCase().includes("noite") || day.shift.toLowerCase() === "noturno") ? <Moon className="w-4 h-4 text-indigo-500" /> : <Sun className="w-4 h-4 text-amber-500" />
                 ) : (
                   <Coffee className={cn("w-4 h-4", day.isToday ? "text-white" : "text-emerald-500")} />
                 )}

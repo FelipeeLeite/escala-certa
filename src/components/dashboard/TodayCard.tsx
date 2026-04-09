@@ -24,7 +24,7 @@ export function TodayCard({ summary }: TodayCardProps) {
   };
 
   const isWorking = summary.today.actualStatus === "trabalho";
-  const isNight = summary.today.shift === "noturno";
+  const isNight = summary.today.shift.toLowerCase().includes("noite") || summary.today.shift.toLowerCase() === "noturno";
   const isOverridden = summary.today.isOverridden;
 
   // Mensagens inteligentes (Tarefa 10)
@@ -36,7 +36,8 @@ export function TodayCard({ summary }: TodayCardProps) {
 
   const getStatusLabel = () => {
     if (!isWorking) return "FOLGA ☕";
-    return isNight ? "PLANTÃO NOTURNO 🌙" : "PLANTÃO DIURNO ☀️";
+    if (isNight) return `${summary.today.shift.toUpperCase()} 🌙`;
+    return `${summary.today.shift.toUpperCase()} ☀️`;
   };
 
   const formatHours = (hoursStr: string) => {

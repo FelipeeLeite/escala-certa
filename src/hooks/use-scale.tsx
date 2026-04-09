@@ -24,6 +24,10 @@ const defaultConfig: ScaleConfig = {
   fixedShift: "diurno",
   dayShiftHours: { start: "07:00", end: "19:00" },
   nightShiftHours: { start: "19:00", end: "07:00" },
+  customCycle: [
+    { id: "1", type: "trabalho", label: "Plantão", startTime: "07:00", endTime: "19:00", crossesMidnight: false },
+    { id: "2", type: "folga", label: "Folga", startTime: "00:00", endTime: "00:00", crossesMidnight: false }
+  ],
   displayPlantonsCount: 10,
   financial: {
     mode: "per_shift",

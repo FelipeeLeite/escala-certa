@@ -15,7 +15,7 @@ export function DashboardHeader({ config, events }: DashboardHeaderProps) {
           Seu Dia a Dia
         </h1>
         <p className="text-sm sm:text-lg text-muted-foreground font-medium">
-          Acompanhe seu plantão e organize seu descanso.
+          {config.shiftMode === "custom_cycle" ? "Sua escala personalizada está ativa." : "Acompanhe seu plantão e organize seu descanso."}
         </p>
       </div>
       <div className="flex gap-2 sm:gap-3 w-full sm:w-auto">

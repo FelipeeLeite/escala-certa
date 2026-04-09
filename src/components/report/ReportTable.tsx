@@ -55,10 +55,15 @@ export function ReportTable({ days }: ReportTableProps) {
                   </span>
                 </td>
                 <td className="px-6 py-4 capitalize text-sm font-medium">
-                  {day.actualStatus === "trabalho" ? (day.shift === "diurno" ? "Diurno ☀️" : "Noturno 🌙") : "-"}
+                  {day.actualStatus === "trabalho" ? (
+                    <div className="flex items-center gap-1">
+                      <span>{day.shift}</span>
+                      {(day.shift.toLowerCase().includes("noite") || day.shift.toLowerCase() === "noturno") ? "🌙" : "☀️"}
+                    </div>
+                  ) : "-"}
                 </td>
                 <td className="px-6 py-4 text-sm font-bold text-muted-foreground">
-                  {day.actualStatus === "trabalho" ? "12h" : "0h"}
+                  {day.actualStatus === "trabalho" ? day.hours : "0h"}
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex flex-wrap gap-1">
