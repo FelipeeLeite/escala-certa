@@ -54,8 +54,8 @@ export function NextPlantons({ plantons, offDays }: NextPlantonsProps) {
                 <div className={cn(
                   "w-10 h-10 sm:w-12 sm:h-12 rounded-xl flex flex-col items-center justify-center text-xs sm:text-sm font-bold shadow-inner transition-transform group-hover:scale-105",
                   (plantao.shift.toLowerCase().includes("noite") || plantao.shift.toLowerCase() === "noturno")
-                    ? "bg-indigo-50 text-indigo-600 border border-indigo-100"
-                    : "bg-amber-50 text-amber-600 border border-amber-100"
+                    ? "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border border-indigo-500/20"
+                    : "bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20"
                 )}>
                   <span className="text-base sm:text-lg leading-none">{format(plantao.date, "dd")}</span>
                   <span className="uppercase text-[8px] sm:text-[10px] opacity-70">{format(plantao.date, "MMM", { locale: ptBR })}</span>
@@ -77,8 +77,8 @@ export function NextPlantons({ plantons, offDays }: NextPlantonsProps) {
                     <span className={cn(
                       "text-[8px] px-2 py-0.5 rounded-full font-black uppercase tracking-widest",
                       (plantao.shift.toLowerCase().includes("noite") || plantao.shift.toLowerCase() === "noturno")
-                        ? "bg-indigo-100 text-indigo-700"
-                        : "bg-amber-100 text-amber-700"
+                        ? "bg-indigo-500/20 text-indigo-600 dark:text-indigo-400"
+                        : "bg-amber-500/20 text-amber-600 dark:text-amber-400"
                     )}>
                       {plantao.shift} {(plantao.shift.toLowerCase().includes("noite") || plantao.shift.toLowerCase() === "noturno") ? "🌙" : "☀️"}
                     </span>
@@ -109,7 +109,7 @@ export function NextPlantons({ plantons, offDays }: NextPlantonsProps) {
               className="group bg-card border rounded-2xl p-4 hover:shadow-md transition-all flex items-center justify-between opacity-80 hover:opacity-100"
             >
               <div className="flex items-center gap-3 sm:gap-4">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-100 flex flex-col items-center justify-center text-xs sm:text-sm font-bold shadow-inner transition-transform group-hover:scale-105">
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 flex flex-col items-center justify-center text-xs sm:text-sm font-bold shadow-inner transition-transform group-hover:scale-105">
                   <span className="text-base sm:text-lg leading-none">{format(folga.date, "dd")}</span>
                   <span className="uppercase text-[8px] sm:text-[10px] opacity-70">{format(folga.date, "MMM", { locale: ptBR })}</span>
                 </div>

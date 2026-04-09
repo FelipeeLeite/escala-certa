@@ -55,8 +55,8 @@ export function TodayCard({ summary }: TodayCardProps) {
         ? "bg-gradient-to-br from-blue-600 via-blue-500 to-indigo-600 text-white" 
         : "bg-gradient-to-br from-emerald-600 via-emerald-500 to-teal-600 text-white"
     )}>
-      <div className="absolute -right-12 -top-12 w-64 h-64 bg-white/10 rounded-full blur-3xl" />
-      <div className="absolute -left-12 -bottom-12 w-64 h-64 bg-black/10 rounded-full blur-3xl" />
+      <div className="absolute -right-12 -top-12 w-64 h-64 bg-white/10 rounded-full blur-3xl opacity-50 dark:opacity-20" />
+      <div className="absolute -left-12 -bottom-12 w-64 h-64 bg-black/10 rounded-full blur-3xl opacity-50 dark:opacity-40" />
       
       <div className="relative z-10 space-y-6 sm:space-y-8">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

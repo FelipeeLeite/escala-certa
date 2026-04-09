@@ -42,12 +42,12 @@ import { DayInfo, EventType } from "@/types/scale";
 import { formatMonthYearBR, formatWeekdayBR, formatDayLongBR } from "@/utils/date-format";
 
 const eventTypes: { value: EventType; label: string; icon: any; color: string; defaultOverride?: boolean; defaultStatus?: "trabalho" | "folga" }[] = [
-  { value: "ferias", label: "Férias", icon: Palmtree, color: "bg-emerald-100 text-emerald-700", defaultOverride: true, defaultStatus: "folga" },
-  { value: "atestado", label: "Atestado", icon: Stethoscope, color: "bg-rose-100 text-rose-700", defaultOverride: true, defaultStatus: "folga" },
-  { value: "folga_extra", label: "Folga Extra", icon: Coffee, color: "bg-purple-100 text-purple-700", defaultOverride: true, defaultStatus: "folga" },
-  { value: "plantao_extra", label: "Plantão Extra", icon: Zap, color: "bg-orange-100 text-orange-700", defaultOverride: true, defaultStatus: "trabalho" },
-  { value: "compromisso", label: "Compromisso", icon: Star, color: "bg-amber-100 text-amber-700", defaultOverride: false },
-  { value: "lembrete", label: "Lembrete", icon: Info, color: "bg-slate-100 text-slate-700", defaultOverride: false },
+  { value: "ferias", label: "Férias", icon: Palmtree, color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20", defaultOverride: true, defaultStatus: "folga" },
+  { value: "atestado", label: "Atestado", icon: Stethoscope, color: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20", defaultOverride: true, defaultStatus: "folga" },
+  { value: "folga_extra", label: "Folga Extra", icon: Coffee, color: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20", defaultOverride: true, defaultStatus: "folga" },
+  { value: "plantao_extra", label: "Plantão Extra", icon: Zap, color: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20", defaultOverride: true, defaultStatus: "trabalho" },
+  { value: "compromisso", label: "Compromisso", icon: Star, color: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20", defaultOverride: false },
+  { value: "lembrete", label: "Lembrete", icon: Info, color: "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20", defaultOverride: false },
 ];
 
 export default function CalendarPage() {

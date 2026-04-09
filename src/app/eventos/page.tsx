@@ -10,15 +10,15 @@ import { cn } from "@/lib/utils";
 import { formatWeekdayBR } from "@/utils/date-format";
 
 const eventTypes: { value: EventType; label: string; color: string; defaultOverride?: boolean; defaultStatus?: "trabalho" | "folga" }[] = [
-  { value: "ferias", label: "Férias", color: "bg-green-100 text-green-700", defaultOverride: true, defaultStatus: "folga" },
-  { value: "atestado", label: "Atestado", color: "bg-red-100 text-red-700", defaultOverride: true, defaultStatus: "folga" },
-  { value: "troca", label: "Troca de Plantão", color: "bg-blue-100 text-blue-700", defaultOverride: true },
-  { value: "folga_extra", label: "Folga Extra", color: "bg-purple-100 text-purple-700", defaultOverride: true, defaultStatus: "folga" },
-  { value: "plantao_extra", label: "Plantão Extra", color: "bg-orange-100 text-orange-700", defaultOverride: true, defaultStatus: "trabalho" },
-  { value: "treinamento", label: "Treinamento", color: "bg-indigo-100 text-indigo-700", defaultOverride: false },
-  { value: "ausencia", label: "Ausência", color: "bg-rose-100 text-rose-700", defaultOverride: true, defaultStatus: "folga" },
-  { value: "compromisso", label: "Compromisso", color: "bg-amber-100 text-amber-700", defaultOverride: false },
-  { value: "lembrete", label: "Lembrete", color: "bg-slate-100 text-slate-700", defaultOverride: false },
+  { value: "ferias", label: "Férias", color: "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20", defaultOverride: true, defaultStatus: "folga" },
+  { value: "atestado", label: "Atestado", color: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20", defaultOverride: true, defaultStatus: "folga" },
+  { value: "troca", label: "Troca de Plantão", color: "bg-blue-500/10 text-blue-600 dark:text-blue-400 border-blue-500/20", defaultOverride: true },
+  { value: "folga_extra", label: "Folga Extra", color: "bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20", defaultOverride: true, defaultStatus: "folga" },
+  { value: "plantao_extra", label: "Plantão Extra", color: "bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20", defaultOverride: true, defaultStatus: "trabalho" },
+  { value: "treinamento", label: "Treinamento", color: "bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 border-indigo-500/20", defaultOverride: false },
+  { value: "ausencia", label: "Ausência", color: "bg-rose-500/10 text-rose-600 dark:text-rose-400 border-rose-500/20", defaultOverride: true, defaultStatus: "folga" },
+  { value: "compromisso", label: "Compromisso", color: "bg-amber-500/10 text-amber-600 dark:text-amber-400 border-amber-500/20", defaultOverride: false },
+  { value: "lembrete", label: "Lembrete", color: "bg-slate-500/10 text-slate-600 dark:text-slate-400 border-slate-500/20", defaultOverride: false },
 ];
 
 export default function EventsPage() {

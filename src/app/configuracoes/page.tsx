@@ -106,7 +106,7 @@ export default function SettingsPage() {
       {showFeedback && (
         <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[100] bg-emerald-600 text-white px-6 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-top-4 duration-300">
           <div className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center">
-            <Save className="w-3 h-3" />
+            <Save className="w-3 h-3 text-white" />
           </div>
           <span className="font-bold text-sm sm:text-base">Configurações salvas com sucesso!</span>
         </div>
@@ -240,8 +240,8 @@ export default function SettingsPage() {
                               className={cn(
                                 "py-2 rounded-xl text-xs font-bold border transition-all", 
                                 step.type === "trabalho" 
-                                  ? "bg-primary text-primary-foreground border-primary shadow-md" 
-                                  : "bg-background text-muted-foreground hover:bg-secondary/50"
+                                  ? "bg-primary/20 text-primary border-primary/40 shadow-sm" 
+                                  : "bg-background text-muted-foreground hover:bg-secondary/50 border-transparent"
                               )}
                             >Trabalho</button>
                             <button 
@@ -249,8 +249,8 @@ export default function SettingsPage() {
                               className={cn(
                                 "py-2 rounded-xl text-xs font-bold border transition-all", 
                                 step.type === "folga" 
-                                  ? "bg-emerald-600 text-white border-emerald-600 shadow-md" 
-                                  : "bg-background text-muted-foreground hover:bg-secondary/50"
+                                  ? "bg-emerald-600/20 text-emerald-600 border-emerald-600/40 shadow-sm" 
+                                  : "bg-background text-muted-foreground hover:bg-secondary/50 border-transparent"
                               )}
                             >Folga</button>
                           </div>
@@ -345,7 +345,9 @@ export default function SettingsPage() {
                     onClick={() => setFormData({ ...formData, financialMode: "per_shift" })}
                     className={cn(
                       "py-3 rounded-2xl text-sm font-bold border transition-all",
-                      formData.financialMode === "per_shift" ? "bg-primary text-white border-primary shadow-md" : "bg-secondary/30 text-muted-foreground"
+                      formData.financialMode === "per_shift" 
+                        ? "bg-primary/20 text-primary border-primary/40 shadow-sm" 
+                        : "bg-secondary/30 text-muted-foreground border-transparent"
                     )}
                   >
                     Por Plantão
@@ -354,7 +356,9 @@ export default function SettingsPage() {
                     onClick={() => setFormData({ ...formData, financialMode: "per_hour" })}
                     className={cn(
                       "py-3 rounded-2xl text-sm font-bold border transition-all",
-                      formData.financialMode === "per_hour" ? "bg-primary text-white border-primary shadow-md" : "bg-secondary/30 text-muted-foreground"
+                      formData.financialMode === "per_hour" 
+                        ? "bg-primary/20 text-primary border-primary/40 shadow-sm" 
+                        : "bg-secondary/30 text-muted-foreground border-transparent"
                     )}
                   >
                     Por Hora
@@ -434,13 +438,13 @@ function ModeButton({ active, onClick, icon: Icon, title, desc }: any) {
       className={cn(
         "flex flex-col items-start p-6 rounded-3xl border-2 transition-all text-left gap-3 group active:scale-95",
         active 
-          ? "border-primary bg-primary/5 shadow-lg shadow-primary/5" 
+          ? "border-primary bg-primary/10 shadow-lg shadow-primary/5" 
           : "border-transparent bg-secondary/30 hover:bg-secondary/50"
       )}
     >
       <div className={cn(
         "p-2.5 rounded-xl transition-colors",
-        active ? "bg-primary text-white shadow-md shadow-primary/20" : "bg-background text-muted-foreground group-hover:text-foreground"
+        active ? "bg-primary text-primary-foreground shadow-md shadow-primary/20" : "bg-background text-muted-foreground group-hover:text-foreground"
       )}>
         <Icon className="w-5 h-5" />
       </div>
