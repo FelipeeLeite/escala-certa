@@ -61,7 +61,7 @@ export default function Home() {
               Escala <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Certa</span>
             </h1>
             <p className="text-slate-400 font-medium text-lg sm:text-xl leading-relaxed max-w-[85%] mx-auto">
-              Sua rotina de plantões e ciclos personalizados sob controle <span className="text-white border-b border-primary/50">total</span>.
+              Organize <span className="text-white">qualquer</span> escala de trabalho com clareza total.
             </p>
           </div>
         </div>
