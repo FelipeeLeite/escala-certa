@@ -1,66 +1,126 @@
 import Link from "next/link";
-import { Calendar, LayoutDashboard, Settings, PlusCircle, FileBarChart, CheckCircle2 } from "lucide-react";
+import { Calendar, LayoutDashboard, Settings, FileBarChart, CheckCircle2 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-6 text-center bg-gradient-to-b from-background to-secondary/20">
-      <div className="max-w-md w-full space-y-10 py-12">
-        <div className="space-y-4 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="w-20 h-20 bg-primary rounded-[2.5rem] flex items-center justify-center mx-auto shadow-2xl shadow-primary/20 mb-6 rotate-3">
-            <Calendar className="w-10 h-10 text-primary-foreground" />
+    <main className="relative min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 text-center overflow-hidden bg-[#030712] selection:bg-primary/30">
+      {/* Background sophisticated layer */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        {/* Primary Glow - Top Right */}
+        <div 
+          className="absolute -top-[20%] -right-[10%] w-[100%] h-[100%] rounded-full opacity-20 blur-[120px] animate-pulse"
+          style={{
+            background: "radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, rgba(37, 99, 235, 0.2) 50%, transparent 100%)",
+            animationDuration: "15s"
+          }}
+        />
+        
+        {/* Secondary Glow - Bottom Left */}
+        <div 
+          className="absolute -bottom-[20%] -left-[10%] w-[80%] h-[80%] rounded-full opacity-15 blur-[100px]"
+          style={{
+            background: "radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, rgba(124, 58, 237, 0.1) 50%, transparent 100%)",
+            animationDuration: "20s"
+          }}
+        />
+
+        {/* Center Accent Glow */}
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] rounded-full opacity-10 blur-[150px]"
+          style={{
+            background: "radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%)"
+          }}
+        />
+
+        {/* Noise Overlay - Inline SVG */}
+        <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay">
+          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
+            <filter id="noiseFilter">
+              <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+            </filter>
+            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+          </svg>
+        </div>
+
+        {/* Subtle Horizontal/Vertical Lines (Grid-like but minimal) */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+      </div>
+
+      <div className="relative z-10 max-w-lg w-full space-y-12 py-16">
+        <div className="space-y-8 animate-fade-in opacity-0 fill-mode-forwards" style={{ animationDelay: '200ms' }}>
+          <div className="relative inline-block group">
+            <div className="absolute inset-0 bg-primary/30 blur-3xl rounded-full scale-150 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+            <div className="relative w-24 h-24 bg-gradient-to-br from-primary via-blue-600 to-indigo-700 rounded-[2.5rem] flex items-center justify-center mx-auto shadow-2xl shadow-primary/20 mb-8 -rotate-2 transition-all duration-500 hover:rotate-0 hover:scale-105 active:scale-95">
+              <Calendar className="w-12 h-12 text-white drop-shadow-lg" />
+            </div>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-black tracking-tight text-foreground">Escala Certa</h1>
-          <p className="text-muted-foreground font-medium text-lg leading-relaxed">
-            Sua rotina de plantões <span className="text-primary font-bold">12x36</span> sob controle total.
-          </p>
+          
+          <div className="space-y-3">
+            <h1 className="text-6xl sm:text-7xl font-black tracking-tighter text-white drop-shadow-sm">
+              Escala <span className="bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">Certa</span>
+            </h1>
+            <p className="text-slate-400 font-medium text-lg sm:text-xl leading-relaxed max-w-[85%] mx-auto">
+              Sua rotina de plantões e ciclos personalizados sob controle <span className="text-white border-b border-primary/50">total</span>.
+            </p>
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3 sm:gap-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <Link
+        <div className="grid grid-cols-2 gap-4 sm:gap-6 animate-slide-up opacity-0 fill-mode-forwards" style={{ animationDelay: '500ms' }}>
+          <HomeCard
             href="/dashboard"
-            className="flex flex-col items-center justify-center p-5 sm:p-6 bg-card border rounded-3xl hover:border-primary/50 hover:shadow-xl transition-all group active:scale-95"
-          >
-            <div className="p-3 bg-blue-50 text-blue-600 rounded-2xl mb-3 group-hover:scale-110 transition-transform">
-              <LayoutDashboard className="w-6 h-6 sm:w-8 sm:h-8" />
-            </div>
-            <span className="font-bold text-sm">Dashboard</span>
-          </Link>
-          <Link
+            icon={<LayoutDashboard className="w-7 h-7 sm:w-8 sm:h-8" />}
+            label="Dashboard"
+            color="bg-blue-500/20 text-blue-400"
+          />
+          <HomeCard
             href="/calendario"
-            className="flex flex-col items-center justify-center p-5 sm:p-6 bg-card border rounded-3xl hover:border-primary/50 hover:shadow-xl transition-all group active:scale-95"
-          >
-            <div className="p-3 bg-amber-50 text-amber-600 rounded-2xl mb-3 group-hover:scale-110 transition-transform">
-              <Calendar className="w-6 h-6 sm:w-8 sm:h-8" />
-            </div>
-            <span className="font-bold text-sm">Escala</span>
-          </Link>
-          <Link
+            icon={<Calendar className="w-7 h-7 sm:w-8 sm:h-8" />}
+            label="Calendário"
+            color="bg-amber-500/20 text-amber-400"
+          />
+          <HomeCard
             href="/relatorio"
-            className="flex flex-col items-center justify-center p-5 sm:p-6 bg-card border rounded-3xl hover:border-primary/50 hover:shadow-xl transition-all group active:scale-95"
-          >
-            <div className="p-3 bg-emerald-50 text-emerald-600 rounded-2xl mb-3 group-hover:scale-110 transition-transform">
-              <FileBarChart className="w-6 h-6 sm:w-8 sm:h-8" />
-            </div>
-            <span className="font-bold text-sm">Relatório</span>
-          </Link>
-          <Link
+            icon={<FileBarChart className="w-7 h-7 sm:w-8 sm:h-8" />}
+            label="Relatórios"
+            color="bg-emerald-500/20 text-emerald-400"
+          />
+          <HomeCard
             href="/configuracoes"
-            className="flex flex-col items-center justify-center p-5 sm:p-6 bg-card border rounded-3xl hover:border-primary/50 hover:shadow-xl transition-all group active:scale-95"
-          >
-            <div className="p-3 bg-slate-50 text-slate-600 rounded-2xl mb-3 group-hover:scale-110 transition-transform">
-              <Settings className="w-6 h-6 sm:w-8 sm:h-8" />
-            </div>
-            <span className="font-bold text-sm">Ajustes</span>
-          </Link>
+            icon={<Settings className="w-7 h-7 sm:w-8 sm:h-8" />}
+            label="Ajustes"
+            color="bg-slate-500/20 text-slate-400"
+          />
         </div>
 
-        <div className="pt-8 animate-in fade-in duration-1000">
-          <div className="flex items-center justify-center gap-2 text-muted-foreground bg-secondary/50 py-2 px-4 rounded-full w-fit mx-auto border">
-            <CheckCircle2 className="w-4 h-4 text-emerald-500" />
-            <span className="text-xs font-bold uppercase tracking-widest">Pronto para uso offline</span>
+        <div className="pt-8 animate-fade-in opacity-0 fill-mode-forwards" style={{ animationDelay: '800ms' }}>
+          <div className="inline-flex items-center justify-center gap-3 text-slate-500 bg-white/5 backdrop-blur-xl py-3 px-8 rounded-full border border-white/10 shadow-inner transition-all hover:bg-white/10 hover:text-slate-300 group">
+            <CheckCircle2 className="w-4 h-4 text-emerald-500 transition-transform group-hover:scale-110" />
+            <span className="text-[10px] sm:text-xs font-black uppercase tracking-[0.3em]">Experiência Premium Offline</span>
           </div>
         </div>
       </div>
     </main>
+  );
+}
+
+function HomeCard({ href, icon, label, color }: { href: string; icon: React.ReactNode; label: string; color: string }) {
+  return (
+    <Link
+      href={href}
+      className="group relative flex flex-col items-center justify-center p-6 sm:p-10 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[2.5rem] shadow-2xl transition-all duration-700 hover:bg-white/[0.08] hover:border-white/20 hover:-translate-y-2 hover:shadow-primary/10 active:scale-95 overflow-hidden"
+    >
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+      
+      {/* Subtle shine effect */}
+      <div className="absolute -inset-full top-0 block h-full w-1/2 z-5 -skew-x-12 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-0 group-hover:animate-shine" />
+
+      <div className={cn("relative p-5 rounded-3xl mb-5 transition-all duration-700 group-hover:scale-110 group-hover:rotate-6 shadow-xl", color)}>
+        {icon}
+      </div>
+      <span className="relative font-extrabold text-sm sm:text-lg tracking-tight text-slate-300 group-hover:text-white transition-colors duration-500">
+        {label}
+      </span>
+    </Link>
   );
 }
