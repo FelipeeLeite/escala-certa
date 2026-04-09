@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -12,50 +12,74 @@ interface TimeInputProps {
 }
 
 export function TimeInput({ value, onChange, label, className }: TimeInputProps) {
+  const [inputValue, setInputValue] = useState(value);
   const [isFocused, setIsFocused] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
 
-  // Divide o valor HH:mm
-  const [hours, minutes] = value.split(":");
-
-  const handleHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value.replace(/\D/g, "");
-    if (val.length > 2) val = val.slice(-2);
-    
-    const h = parseInt(val);
-    if (h > 23) val = "23";
-    
-    onChange(`${val.padStart(2, "0")}:${minutes}`);
-    
-    // Auto-focus para minutos se preencheu 2 dígitos
-    if (val.length === 2 && val !== "0") {
-      const nextInput = inputRef.current?.parentElement?.querySelectorAll("input")[1];
-      nextInput?.focus();
+  // Sincroniza o estado interno com o valor externo quando ele muda (ex: reset ou carga inicial)
+  useEffect(() => {
+    if (!isFocused) {
+      setInputValue(value);
     }
-  };
+  }, [value, isFocused]);
 
-  const handleMinutesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let val = e.target.value.replace(/\D/g, "");
-    if (val.length > 2) val = val.slice(-2);
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let val = e.target.value.replace(/\D/g, ""); // Remove tudo que não é dígito
     
-    const m = parseInt(val);
-    if (m > 59) val = "59";
-    
-    onChange(`${hours}:${val.padStart(2, "0")}`);
-  };
+    // Limita a 4 dígitos (HHMM)
+    if (val.length > 4) val = val.slice(0, 4);
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, part: "h" | "m") => {
-    if (e.key === "Backspace" && part === "m" && (e.currentTarget.value === "" || e.currentTarget.value === "00")) {
-      inputRef.current?.focus();
+    // Aplica a máscara visual HH:mm conforme digita
+    let formatted = val;
+    if (val.length >= 3) {
+      formatted = `${val.slice(0, 2)}:${val.slice(2)}`;
+    } else if (val.length > 0) {
+      formatted = val;
+    }
+
+    setInputValue(formatted);
+
+    // Se tiver 4 dígitos completos, valida e envia para o componente pai
+    if (val.length === 4) {
+      const h = parseInt(val.slice(0, 2));
+      const m = parseInt(val.slice(2));
+      
+      const validH = Math.min(Math.max(h, 0), 23);
+      const validM = Math.min(Math.max(m, 0), 59);
+      
+      const result = `${validH.toString().padStart(2, "0")}:${validM.toString().padStart(2, "0")}`;
+      setInputValue(result);
+      onChange(result);
     }
   };
 
   const handleBlur = () => {
     setIsFocused(false);
-    // Validação final ao sair: garante HH:mm com 2 dígitos
-    const h = (hours || "00").padStart(2, "0");
-    const m = (minutes || "00").padStart(2, "0");
-    onChange(`${h}:${m}`);
+    
+    // Ao sair, garante que o valor seja válido e formatado
+    let clean = inputValue.replace(/\D/g, "");
+    
+    if (clean.length === 0) {
+      setInputValue(value); // Se apagou tudo, volta para o valor anterior
+      return;
+    }
+
+    // Preenchimento parcial (ex: "7" -> "07:00", "15" -> "15:00", "153" -> "15:03")
+    let h = 0;
+    let m = 0;
+
+    if (clean.length <= 2) {
+      h = parseInt(clean);
+    } else {
+      h = parseInt(clean.slice(0, 2));
+      m = parseInt(clean.slice(2));
+    }
+
+    const validH = Math.min(Math.max(h, 0), 23);
+    const validM = Math.min(Math.max(m, 0), 59);
+    
+    const finalValue = `${validH.toString().padStart(2, "0")}:${validM.toString().padStart(2, "0")}`;
+    setInputValue(finalValue);
+    onChange(finalValue);
   };
 
   return (
@@ -67,46 +91,21 @@ export function TimeInput({ value, onChange, label, className }: TimeInputProps)
       )}
       <div 
         className={cn(
-          "flex items-center gap-2 bg-background border-2 rounded-2xl px-4 py-3 transition-all group",
-          isFocused ? "border-primary ring-4 ring-primary/10" : "border-secondary hover:border-primary/30"
+          "flex items-center gap-3 bg-background border-2 rounded-2xl px-4 py-3 transition-all",
+          isFocused ? "border-primary ring-4 ring-primary/10 shadow-sm" : "border-secondary hover:border-primary/30"
         )}
-        onClick={() => inputRef.current?.focus()}
       >
-        <Clock className={cn("w-5 h-5 transition-colors", isFocused ? "text-primary" : "text-muted-foreground")} />
+        <Clock className={cn("w-5 h-5 shrink-0 transition-colors", isFocused ? "text-primary" : "text-muted-foreground")} />
         
-        <div className="flex items-center flex-1 font-mono text-lg font-bold">
-          <input
-            ref={inputRef}
-            type="text"
-            inputMode="numeric"
-            value={hours}
-            onChange={handleHoursChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={handleBlur}
-            onKeyDown={(e) => handleKeyDown(e, "h")}
-            className="w-8 bg-transparent outline-none text-center focus:text-primary"
-            placeholder="00"
-          />
-          <span className="text-muted-foreground/50 mx-1">:</span>
-          <input
-            type="text"
-            inputMode="numeric"
-            value={minutes}
-            onChange={handleMinutesChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={handleBlur}
-            onKeyDown={(e) => handleKeyDown(e, "m")}
-            className="w-8 bg-transparent outline-none text-center focus:text-primary"
-            placeholder="00"
-          />
-        </div>
-
-        {/* Picker Nativo escondido para acionar o teclado de tempo no Mobile */}
         <input
-          type="time"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="absolute opacity-0 pointer-events-none w-0 h-0"
+          type="text"
+          inputMode="numeric"
+          value={inputValue}
+          onChange={handleInputChange}
+          onFocus={() => setIsFocused(true)}
+          onBlur={handleBlur}
+          placeholder="00:00"
+          className="w-full bg-transparent outline-none font-mono text-lg font-bold text-foreground placeholder:text-muted-foreground/30"
         />
       </div>
     </div>

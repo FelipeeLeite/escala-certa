@@ -237,11 +237,21 @@ export default function SettingsPage() {
                           <div className="grid grid-cols-2 gap-2">
                             <button 
                               onClick={() => updateCycleStep(idx, { type: "trabalho" })}
-                              className={cn("py-2 rounded-xl text-xs font-bold border transition-all", step.type === "trabalho" ? "bg-primary text-white border-primary shadow-md" : "bg-background text-muted-foreground")}
+                              className={cn(
+                                "py-2 rounded-xl text-xs font-bold border transition-all", 
+                                step.type === "trabalho" 
+                                  ? "bg-primary text-primary-foreground border-primary shadow-md" 
+                                  : "bg-background text-muted-foreground hover:bg-secondary/50"
+                              )}
                             >Trabalho</button>
                             <button 
                               onClick={() => updateCycleStep(idx, { type: "folga" })}
-                              className={cn("py-2 rounded-xl text-xs font-bold border transition-all", step.type === "folga" ? "bg-emerald-600 text-white border-emerald-600 shadow-md" : "bg-background text-muted-foreground")}
+                              className={cn(
+                                "py-2 rounded-xl text-xs font-bold border transition-all", 
+                                step.type === "folga" 
+                                  ? "bg-emerald-600 text-white border-emerald-600 shadow-md" 
+                                  : "bg-background text-muted-foreground hover:bg-secondary/50"
+                              )}
                             >Folga</button>
                           </div>
                         </div>
