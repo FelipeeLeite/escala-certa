@@ -4,47 +4,30 @@ import { cn } from "@/lib/utils";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 text-center overflow-hidden bg-[#030712] selection:bg-primary/30">
-      {/* Background sophisticated layer */}
+    <main className="relative min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 text-center overflow-hidden bg-[#020617] selection:bg-primary/30">
+      {/* Background Layer - Abstract & Refined */}
       <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
-        {/* Primary Glow - Top Right */}
+        {/* Subtle Top Right Glow - Very soft blue */}
         <div 
-          className="absolute -top-[20%] -right-[10%] w-[100%] h-[100%] rounded-full opacity-20 blur-[120px] animate-pulse"
+          className="absolute -top-[10%] -right-[10%] w-[60%] h-[60%] rounded-full opacity-[0.08] blur-[120px]"
           style={{
-            background: "radial-gradient(circle, rgba(59, 130, 246, 0.5) 0%, rgba(37, 99, 235, 0.2) 50%, transparent 100%)",
-            animationDuration: "15s"
+            background: "radial-gradient(circle, #3b82f6 0%, transparent 70%)"
           }}
         />
         
-        {/* Secondary Glow - Bottom Left */}
+        {/* Subtle Bottom Left Glow - Very soft indigo */}
         <div 
-          className="absolute -bottom-[20%] -left-[10%] w-[80%] h-[80%] rounded-full opacity-15 blur-[100px]"
+          className="absolute -bottom-[10%] -left-[10%] w-[50%] h-[50%] rounded-full opacity-[0.06] blur-[100px]"
           style={{
-            background: "radial-gradient(circle, rgba(139, 92, 246, 0.4) 0%, rgba(124, 58, 237, 0.1) 50%, transparent 100%)",
-            animationDuration: "20s"
+            background: "radial-gradient(circle, #6366f1 0%, transparent 70%)"
           }}
         />
 
-        {/* Center Accent Glow */}
-        <div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] rounded-full opacity-10 blur-[150px]"
-          style={{
-            background: "radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%)"
-          }}
-        />
+        {/* Minimal Grid System - Clean and Sharp */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:64px_64px] [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,#000_60%,transparent_100%)]" />
 
-        {/* Noise Overlay - Inline SVG */}
-        <div className="absolute inset-0 opacity-[0.15] mix-blend-overlay">
-          <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" className="w-full h-full">
-            <filter id="noiseFilter">
-              <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
-            </filter>
-            <rect width="100%" height="100%" filter="url(#noiseFilter)" />
-          </svg>
-        </div>
-
-        {/* Subtle Horizontal/Vertical Lines (Grid-like but minimal) */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]" />
+        {/* Ultra-subtle texture overlay */}
+        <div className="absolute inset-0 opacity-[0.03] mix-blend-overlay bg-repeat bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
       </div>
 
       <div className="relative z-10 max-w-lg w-full space-y-12 py-16">
