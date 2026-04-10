@@ -87,6 +87,50 @@ describe('Lógica de Escala Certa', () => {
       expect(getPlannedDayInfo(new Date(2026, 3, 2), config24x72).status).toBe('folga');
       expect(getPlannedDayInfo(new Date(2026, 3, 5), config24x72).status).toBe('trabalho');
     });
+
+    it('deve respeitar rigorosamente a data base mesmo quando startDate está em ISO UTC (evita deslocamento por timezone)', () => {
+      const config: ScaleConfig = {
+        ...baseConfig,
+        startDate: "2026-04-20T00:00:00.000Z",
+        shiftMode: "custom_cycle",
+        customCycle: [
+          { id: "1", type: "trabalho", label: "Manhã", startTime: "07:00", endTime: "15:00", crossesMidnight: false },
+          { id: "2", type: "folga", label: "Folga", startTime: "00:00", endTime: "00:00", crossesMidnight: false },
+        ],
+      };
+
+      expect(getPlannedDayInfo(new Date(2026, 3, 20), config).label).toBe("Manhã");
+      expect(getPlannedDayInfo(new Date(2026, 3, 21), config).label).toBe("Folga");
+      expect(getPlannedDayInfo(new Date(2026, 3, 19), config).label).toBe("Folga");
+    });
+
+    it('deve iniciar o passo 1 exatamente na data base futura (cenário real com 8 passos)', () => {
+      const futureBase = "2026-04-20T00:00:00.000Z";
+      const config: ScaleConfig = {
+        ...baseConfig,
+        startDate: futureBase,
+        shiftMode: "custom_cycle",
+        customCycle: [
+          { id: "1", type: "trabalho", label: "Manhã", startTime: "07:00", endTime: "15:00", crossesMidnight: false },
+          { id: "2", type: "trabalho", label: "Manhã", startTime: "07:00", endTime: "15:00", crossesMidnight: false },
+          { id: "3", type: "trabalho", label: "Tarde", startTime: "15:00", endTime: "23:00", crossesMidnight: false },
+          { id: "4", type: "trabalho", label: "Tarde", startTime: "15:00", endTime: "23:00", crossesMidnight: false },
+          { id: "5", type: "trabalho", label: "Noite", startTime: "23:00", endTime: "07:00", crossesMidnight: true },
+          { id: "6", type: "trabalho", label: "Noite", startTime: "23:00", endTime: "07:00", crossesMidnight: true },
+          { id: "7", type: "folga", label: "Folga", startTime: "00:00", endTime: "00:00", crossesMidnight: false },
+          { id: "8", type: "folga", label: "Folga", startTime: "00:00", endTime: "00:00", crossesMidnight: false },
+        ],
+      };
+
+      expect(getPlannedDayInfo(new Date(2026, 3, 20), config).label).toBe("Manhã");
+      expect(getPlannedDayInfo(new Date(2026, 3, 21), config).label).toBe("Manhã");
+      expect(getPlannedDayInfo(new Date(2026, 3, 22), config).label).toBe("Tarde");
+      expect(getPlannedDayInfo(new Date(2026, 3, 23), config).label).toBe("Tarde");
+      expect(getPlannedDayInfo(new Date(2026, 3, 24), config).label).toBe("Noite");
+      expect(getPlannedDayInfo(new Date(2026, 3, 25), config).label).toBe("Noite");
+      expect(getPlannedDayInfo(new Date(2026, 3, 26), config).label).toBe("Folga");
+      expect(getPlannedDayInfo(new Date(2026, 3, 27), config).label).toBe("Folga");
+    });
   });
 
   describe('Turnos (Presets)', () => {

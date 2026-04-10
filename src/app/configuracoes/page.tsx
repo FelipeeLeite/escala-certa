@@ -5,7 +5,6 @@ import {
   ArrowLeft, 
   Save, 
   RotateCcw, 
-  Clock, 
   Repeat, 
   Lock, 
   DollarSign, 
@@ -15,21 +14,23 @@ import {
   ChevronUp, 
   ChevronDown, 
   Settings2,
-  CalendarDays
+  CalendarDays,
+  Moon
 } from "lucide-react";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { TimeInput } from "@/components/shared/TimeInput";
 import { CycleStep, ShiftMode } from "@/types/scale";
+import { getBaseDateFromConfigStartDate } from "@/utils/scale-logic";
 
 export default function SettingsPage() {
   const { config, updateConfig, resetConfig } = useScale();
   const [showFeedback, setShowFeedback] = useState(false);
   
   const [formData, setFormData] = useState({
-    startDate: format(new Date(config.startDate), "yyyy-MM-dd"),
+    startDate: format(getBaseDateFromConfigStartDate(config.startDate), "yyyy-MM-dd"),
     startStatus: config.startStatus,
     shiftMode: (config.shiftMode || "alternating") as ShiftMode,
     initialShift: config.initialShift,
@@ -44,8 +45,10 @@ export default function SettingsPage() {
   });
 
   const handleSave = () => {
+    const [year, month, day] = formData.startDate.split("-").map(Number);
+    const startDateLocal = new Date(year, month - 1, day);
     updateConfig({
-      startDate: new Date(formData.startDate).toISOString(),
+      startDate: startDateLocal.toISOString(),
       startStatus: formData.startStatus as any,
       shiftMode: formData.shiftMode,
       initialShift: formData.initialShift as any,
@@ -158,7 +161,7 @@ export default function SettingsPage() {
               <h2 className="text-xl font-bold">Tipo de Escala</h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               <ModeButton 
                 active={formData.shiftMode === "alternating"} 
                 onClick={() => setFormData(prev => ({ ...prev, shiftMode: "alternating" }))}
@@ -167,11 +170,18 @@ export default function SettingsPage() {
                 desc="Troca semanal"
               />
               <ModeButton 
-                active={formData.shiftMode === "fixed"} 
-                onClick={() => setFormData(prev => ({ ...prev, shiftMode: "fixed" }))}
+                active={formData.shiftMode === "fixed" && formData.fixedShift === "diurno"} 
+                onClick={() => setFormData(prev => ({ ...prev, shiftMode: "fixed", fixedShift: "diurno" }))}
                 icon={Lock}
-                title="12x36 Fixa"
-                desc="Mesmo turno"
+                title="12x36 Fixa Diurna"
+                desc="Sempre diurno"
+              />
+              <ModeButton 
+                active={formData.shiftMode === "fixed" && formData.fixedShift === "noturno"} 
+                onClick={() => setFormData(prev => ({ ...prev, shiftMode: "fixed", fixedShift: "noturno" }))}
+                icon={Moon}
+                title="12x36 Fixa Noturna"
+                desc="Sempre noturno"
               />
               <ModeButton 
                 active={formData.shiftMode === "custom_cycle"} 
@@ -181,6 +191,41 @@ export default function SettingsPage() {
                 desc="Qualquer escala"
               />
             </div>
+
+            {formData.shiftMode === "alternating" && (
+              <div className="bg-secondary/20 border rounded-3xl p-5 space-y-3">
+                <div className="flex items-center justify-between gap-4">
+                  <div className="space-y-1">
+                    <p className="font-bold text-sm">Semana inicial</p>
+                    <p className="text-xs text-muted-foreground">Define o turno da primeira semana a partir da data base.</p>
+                  </div>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setFormData(prev => ({ ...prev, initialShift: "diurno" }))}
+                    className={cn(
+                      "py-3 rounded-2xl text-sm font-bold border transition-all",
+                      formData.initialShift === "diurno"
+                        ? "bg-primary/20 text-primary border-primary/40 shadow-sm"
+                        : "bg-background text-muted-foreground hover:bg-secondary/50 border-transparent"
+                    )}
+                  >
+                    Diurno
+                  </button>
+                  <button
+                    onClick={() => setFormData(prev => ({ ...prev, initialShift: "noturno" }))}
+                    className={cn(
+                      "py-3 rounded-2xl text-sm font-bold border transition-all",
+                      formData.initialShift === "noturno"
+                        ? "bg-primary/20 text-primary border-primary/40 shadow-sm"
+                        : "bg-background text-muted-foreground hover:bg-secondary/50 border-transparent"
+                    )}
+                  >
+                    Noturno
+                  </button>
+                </div>
+              </div>
+            )}
           </section>
 
           {/* Gerenciamento de Ciclo (Apenas para custom_cycle) */}

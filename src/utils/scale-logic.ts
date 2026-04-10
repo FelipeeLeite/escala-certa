@@ -18,12 +18,27 @@ import { ScaleConfig, DayStatus, ShiftType, DayInfo, UserEvent, Summary, MonthMe
  * UTILS DE CÁLCULO DE ESCALA CERTA
  */
 
+export function getBaseDateFromConfigStartDate(startDate: string): Date {
+  const datePart = typeof startDate === "string" ? startDate.slice(0, 10) : "";
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(datePart);
+  if (match) {
+    const year = Number(match[1]);
+    const month = Number(match[2]);
+    const day = Number(match[3]);
+    return startOfDay(new Date(year, month - 1, day));
+  }
+
+  const parsed = new Date(startDate);
+  if (!Number.isFinite(parsed.getTime())) return startOfDay(new Date());
+  return startOfDay(parsed);
+}
+
 /**
  * Calcula as informações planejadas de um dia baseado no modo de escala.
  */
 export function getPlannedDayInfo(date: Date, config: ScaleConfig): { status: DayStatus; shift: string; hours: string; label?: string; cycleStep?: CycleStep } {
   const targetDate = startOfDay(date);
-  const baseDate = startOfDay(new Date(config.startDate));
+  const baseDate = getBaseDateFromConfigStartDate(config.startDate);
   const diffDays = differenceInCalendarDays(targetDate, baseDate);
 
   // MODO: CICLO PERSONALIZADO
